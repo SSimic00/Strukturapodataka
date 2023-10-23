@@ -1,0 +1,4 @@
+﻿  vjezba2.c
+C:\Users\Sime\Desktop\Strukturapodataka\Strukturapodataka\Vjezba2\vjezba2\vjezba2\vjezba2.c(25,9): warning C4047: 'return': 'Osoba *' differs in levels of indirection from 'int'
+C:\Users\Sime\Desktop\Strukturapodataka\Strukturapodataka\Vjezba2\vjezba2\vjezba2\vjezba2.c(41,9): warning C4047: 'return': 'Osoba *' differs in levels of indirection from 'int'
+  vjezba2.vcxproj -> C:\Users\Sime\Desktop\Strukturapodataka\Strukturapodataka\Vjezba2\vjezba2\x64\Debug\vjezba2.exe
