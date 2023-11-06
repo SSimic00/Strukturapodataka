@@ -38,12 +38,12 @@ int main() {
     Position PSum = &HeadSum;
     Position PProduct = &HeadProduct;
 
-    printf("Enter the name of the input file: ");
+    printf("Type the name of the input file: ");
     scanf(" %s", InputFile);
 
     while (choice != 0) {
        
-        printf("What do you want to do with the polynomials?\n");
+        printf("What do you want to do with the file?\n");
         printf("Add them - 1\n");
         printf("Multiply them - 2\n");
         printf("Exit the program - 0\n\n");
