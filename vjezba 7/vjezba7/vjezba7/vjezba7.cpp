@@ -1,12 +1,7 @@
-/*Napisati program koji pomocu vezanih listi(stabala) predstavlja strukturu direktorija.
-Omoguciti unos novih direktorija i pod - direktorija, ispis sadrzaja direktorija i
-povratak u prethodni direktorij.Tocnije program treba preko menija simulirati
-koristenje DOS naredbi : 1 - "md", 2 - "cd <dir>", 3 - "cd..", 4 - "dir" i 5 – izlaz.*/
-
 #define _CRT_SECURE_NO_WARNINGS
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #define MAX 50
 
@@ -33,20 +28,17 @@ dPosition Back(dPosition, sPosition);
 dPosition FindByName(char*, dPosition);
 int PushStack(sPosition, dPosition);
 dPosition PopStack(sPosition);
-int Line(sPosition, dPosition, dPosition);
-sPosition FindLast(sPosition);
+void FreeMemory(dPosition);
 
-int main()
-{
-    dPosition root;
-    root = (dPosition)malloc(sizeof(Dir));
+int main() {
+    dPosition root = (dPosition)malloc(sizeof(Dir));
     root->child = NULL;
     root->sibling = NULL;
-    sPosition head;
-    head = (sPosition)malloc(sizeof(Stack));
+    strcpy(root->name, "C:");
+
+    sPosition head = (sPosition)malloc(sizeof(Stack));
     head->next = NULL;
     head->prev = NULL;
-    strcpy(root->name, "C:");
 
     int status = 1;
 
@@ -55,101 +47,13 @@ int main()
     }
 
     // Free allocated memory
-    free(root);
-    free(head);
+    FreeMemory(root);
 
     return 0;
 }
 
-int Line(sPosition head, dPosition root, dPosition curr)
-{
-    sPosition s;
-
-    s = FindLast(head);
-
-    if (head->next == NULL) {
-        printf("%s>", root->name);
-        return EXIT_SUCCESS;
-    }
-
-    while (s->prev != NULL) {
-        printf("%s>", s->directory->name);
-        s = s->prev;
-    }
-
-    printf("%s>", curr->name);
-
-    return EXIT_SUCCESS;
-}
-
-sPosition FindLast(sPosition head)
-{
-    sPosition s;
-    s = head->next;
-
-    if (s == NULL) {
-        return NULL;
-    }
-
-    while (s->next != NULL) {
-        s = s->next;
-    }
-
-    return s;
-}
-
-int Menu(dPosition root, sPosition head) {
-    dPosition curr = root;
-    char command[MAX] = { 0 };
-
-    printf("md <filename> - Add new directory\n");
-    printf("cd <filename> - Open directory\n");
-    printf("cd.. - Return to the previous directory\n");
-    printf("dir - Print directories in the current directory\n");
-    printf("exit - Exit the program\n\n");
-
-    while (1) {
-        Line(head, root, curr);
-
-        // Use fgets for input
-        fgets(command, MAX, stdin);
-
-        // Replace newline character with null terminator
-        if (strlen(command) > 0 && command[strlen(command) - 1] == '\n') {
-            command[strlen(command) - 1] = '\0';
-        }
-
-        if (!strcmp(command, "md")) {
-            MakeDir(curr);
-        }
-
-        else if (!strcmp(command, "cd")) {
-            curr = ChangeDir(curr, head);
-        }
-
-        else if (!strcmp(command, "cd..")) {
-            curr = Back(curr, head);
-        }
-
-        else if (!strcmp(command, "dir")) {
-            Directory(curr);
-        }
-
-        else if (!strcmp(command, "exit")) {
-            system("cls");
-            return 0;
-        }
-
-        else
-            printf("404 error: Command not found\n");
-    }
-
-    return EXIT_SUCCESS;
-}
-
 int MakeDir(dPosition curr) {
-    dPosition directory;
-    directory = (dPosition)malloc(sizeof(Dir));
+    dPosition directory = (dPosition)malloc(sizeof(Dir));
     directory->name[0] = '\0';
 
     if (!directory) {
@@ -164,12 +68,12 @@ int MakeDir(dPosition curr) {
         }
         curr->sibling = directory;
     }
-
-    else
+    else {
         curr->child = directory;
+    }
 
     printf("Enter directory name: ");
-    scanf(" %s", directory->name);
+    scanf("%s", directory->name);
 
     directory->sibling = NULL;
     directory->child = NULL;
@@ -214,13 +118,12 @@ dPosition FindByName(char* name, dPosition curr) {
         else
             return curr;
     }
-
-    else
+    else {
         return curr;
+    }
 }
 
 int PushStack(sPosition head, dPosition directory) {
-
     sPosition q = (sPosition)malloc(sizeof(Stack));
 
     q->next = head->next;
@@ -237,30 +140,27 @@ int PushStack(sPosition head, dPosition directory) {
 }
 
 dPosition PopStack(sPosition head) {
+    sPosition q;
 
-    sPosition q = (sPosition)malloc(sizeof(Stack));
-    dPosition p;
-
-    if (head->next == NULL)
+    if (head->next == NULL) {
         return NULL;
+    }
 
     q = head->next;
-    p = q->directory;
+    dPosition p = q->directory;
     head->next = head->next->next;
 
-    if (head->next != NULL)
+    if (head->next != NULL) {
         head->next->prev = head;
+    }
 
     free(q);
 
     return p;
 }
 
-dPosition Back(dPosition curr, sPosition head)
-{
-    dPosition s;
-
-    s = PopStack(head);
+dPosition Back(dPosition curr, sPosition head) {
+    dPosition s = PopStack(head);
 
     if (s == NULL) {
         printf("Cannot exit the root directory!\n");
@@ -270,8 +170,7 @@ dPosition Back(dPosition curr, sPosition head)
     return s;
 }
 
-dPosition ChangeDir(dPosition curr, sPosition head)
-{
+dPosition ChangeDir(dPosition curr, sPosition head) {
     dPosition s;
     char name[MAX];
     name[0] = '\0';
@@ -295,3 +194,82 @@ dPosition ChangeDir(dPosition curr, sPosition head)
 
     return s;
 }
+
+void FreeMemory(dPosition root) {
+    if (root != NULL) {
+        FreeMemory(root->child);
+        FreeMemory(root->sibling);
+        free(root);
+    }
+}
+
+int Menu(dPosition root, sPosition head) {
+    dPosition curr = root;
+    char command[MAX] = { 0 };
+
+    printf("md <filename> - Add new directory\n");
+    printf("cd <filename> - Open directory\n");
+    printf("cd.. - Return to the previous directory\n");
+    printf("dir - Print directories in the current directory\n");
+    printf("exit - Exit the program\n\n");
+
+    while (1) {
+        printf("%s>", curr->name);
+
+        // Use fgets for input
+        fgets(command, MAX, stdin);
+
+        // Remove leading and trailing whitespaces, including newline
+        size_t len = strlen(command);
+        if (len > 0 && command[len - 1] == '\n') {
+            command[len - 1] = '\0';
+        }
+
+        // Trim leading whitespaces
+        size_t start = 0;
+        while (start < len && (command[start] == ' ' || command[start] == '\t')) {
+            ++start;
+        }
+
+        // Trim trailing whitespaces
+        size_t end = len - 1;
+        while (end > start && (command[end] == ' ' || command[end] == '\t')) {
+            command[end--] = '\0';
+        }
+
+        // Trim remaining leading whitespaces by shifting characters
+        size_t i = 0;
+        while (start <= end) {
+            command[i++] = command[start++];
+        }
+
+        if (!strcmp(command, "md")) {
+            MakeDir(curr);
+        }
+        else if (!strncmp(command, "md ", 3)) {  // Check for "md " followed by a name
+            MakeDir(curr);
+        }
+        else if (!strcmp(command, "cd")) {
+            curr = ChangeDir(curr, head);
+        }
+        else if (!strncmp(command, "cd ", 3)) {  // Check for "cd " followed by a name
+            curr = ChangeDir(curr, head);
+        }
+        else if (!strcmp(command, "cd..")) {
+            curr = Back(curr, head);
+        }
+        else if (!strcmp(command, "dir")) {
+            Directory(curr);
+        }
+        else if (!strcmp(command, "exit")) {
+            system("cls");
+            return 0;
+        }
+        else {
+            printf("404 error: Command not found\n");
+        }
+    }
+
+    return EXIT_SUCCESS;
+}
+
