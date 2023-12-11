@@ -203,8 +203,8 @@ int Menu(dPosition root, sPosition head) {
     dPosition curr = root;
     char command[MAX] = { 0 };
 
-    printf("md <filename> - Add new directory\n");
-    printf("cd <filename> - Open directory\n");
+    printf("md filename - Add new directory\n");
+    printf("cd filename - Open directory\n");
     printf("cd.. - Return to the previous directory\n");
     printf("dir - Print directories in the current directory\n");
     printf("exit - Exit the program\n\n");
