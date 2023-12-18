@@ -98,6 +98,10 @@ void FreeTree(Position curr) {
 Position Insert(Position curr, int element) {
 	if (curr == NULL) {
 		curr = (Position)malloc(sizeof(Tree));
+		
+		//napravi provjeri nakon malloca//
+		//napravi da program radi s istim elementom,stavi da =< ili >= nije bitno hocemo li spremat L ili D//
+		
 		curr->el = element;
 		curr->L = NULL;
 		curr->R = NULL;
