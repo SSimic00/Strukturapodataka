@@ -45,10 +45,7 @@ int main() {
     while (status) {
         status = Menu(root, head);
     }
-
-    // Free allocated memory
     FreeMemory(root);
-
     return 0;
 }
 
@@ -57,7 +54,7 @@ int MakeDir(dPosition curr) {
     directory->name[0] = '\0';
 
     if (!directory) {
-        printf("Cannot allocate memory!\n");
+        printf("Cannot allocate mwemory!\n");
         return EXIT_FAILURE;
     }
 
@@ -107,7 +104,6 @@ dPosition FindByName(char* name, dPosition curr) {
     }
 
     curr = curr->child;
-
     while (strcmp(name, curr->name) != 0 && curr->sibling != NULL) {
         curr = curr->sibling;
     }
@@ -179,7 +175,7 @@ dPosition ChangeDir(dPosition curr, sPosition head) {
     scanf("%s", name);
 
     if (curr->child == NULL) {
-        printf("There's no directory that you are able to open!\n");
+        printf("There s no directory that you are able to open!\n");
         return curr;
     }
 
@@ -207,8 +203,8 @@ int Menu(dPosition root, sPosition head) {
     dPosition curr = root;
     char command[MAX] = { 0 };
 
-    printf("md <filename> - Add new directory\n");
-    printf("cd <filename> - Open directory\n");
+    printf("md filename - Add new directory\n");
+    printf("cd filename - Open directory\n");
     printf("cd.. - Return to the previous directory\n");
     printf("dir - Print directories in the current directory\n");
     printf("exit - Exit the program\n\n");
@@ -219,25 +215,20 @@ int Menu(dPosition root, sPosition head) {
         // Use fgets for input
         fgets(command, MAX, stdin);
 
-        // Remove leading and trailing whitespaces, including newline
         size_t len = strlen(command);
         if (len > 0 && command[len - 1] == '\n') {
             command[len - 1] = '\0';
         }
 
-        // Trim leading whitespaces
         size_t start = 0;
         while (start < len && (command[start] == ' ' || command[start] == '\t')) {
             ++start;
         }
 
-        // Trim trailing whitespaces
         size_t end = len - 1;
         while (end > start && (command[end] == ' ' || command[end] == '\t')) {
             command[end--] = '\0';
         }
-
-        // Trim remaining leading whitespaces by shifting characters
         size_t i = 0;
         while (start <= end) {
             command[i++] = command[start++];
