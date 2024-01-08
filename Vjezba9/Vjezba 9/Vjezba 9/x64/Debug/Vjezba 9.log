@@ -1,0 +1,5 @@
+﻿  vj9.cpp
+C:\Users\ŠimeŠimičević\Desktop\Struktura-podataka\Strukturapodataka\Vjezba9\Vjezba 9\Vjezba 9\vj9.cpp(6,1): warning C4005: 'EXIT_SUCCESS': macro redefinition
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\ucrt\stdlib.h(52,1): message : see previous definition of 'EXIT_SUCCESS'
+C:\Users\ŠimeŠimičević\Desktop\Struktura-podataka\Strukturapodataka\Vjezba9\Vjezba 9\Vjezba 9\vj9.cpp(60,15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  Vjezba 9.vcxproj -> C:\Users\ŠimeŠimičević\Desktop\Struktura-podataka\Strukturapodataka\Vjezba9\Vjezba 9\x64\Debug\Vjezba 9.exe
