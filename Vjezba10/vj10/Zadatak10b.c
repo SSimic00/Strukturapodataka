@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-// Struktura za gradove
+
 struct cities;
 typedef struct cities* Position;
 typedef struct cities {
@@ -12,7 +12,7 @@ typedef struct cities {
     int residents;
 } Cities;
 
-// Struktura za države
+
 struct countries;
 typedef struct countries* Tree;
 typedef struct countries {
@@ -21,15 +21,12 @@ typedef struct countries {
     Tree right;
     Position city;
 } Countries;
-
-// Funkcije
 int Search(Tree root, char* countryName, int population);
 void AddCity(Position cityList, char* fileName);
 Tree AddCountry(Tree root, char* countryName, char* fileName);
 Tree SearchCountry(Tree root, char* countryName);
 void PrintCountries(Tree root);
 void PrintCities(Position cityList);
-
 int main()
 {
     Tree root = NULL;
@@ -39,27 +36,22 @@ int main()
 
     char cityName[50];
     int population = 0;
-
- 
     file = fopen("Countries.txt", "r");
     if (file == NULL)
     {
         perror("ERROR: Unable to open countries.txt");
         return -1;
     }
-
     while (fscanf(file, "%s %s", countryName, fileName) == 2)
     {
-        root = AddCountry(root, countryName, fileName);
+    root = AddCountry(root, countryName, fileName);
     }
 
     if (ferror(file))
     {
-        perror("ERROR: Error reading from countries.txt");
+        perror("ERROR: Errorreading from countries.txt");
     }
-
     fclose(file);
-
     printf("COUNTRIES:\n");
     PrintCountries(root);
 
@@ -82,16 +74,13 @@ Tree AddCountry(Tree root, char* countryName, char* fileName)
         printf("Memory allocation unsuccessful.\n");
         exit(EXIT_FAILURE);
     }
-
     strcpy(newNode->name, countryName);
-
     newNode->city = (Position)malloc(sizeof(Cities));
     if (newNode->city == NULL)
     {
         printf("Memory allocation unsuccessful.\n");
         exit(EXIT_FAILURE);
     }
-
     strcpy(newNode->city->name, "");
     newNode->city->residents = 0;
     newNode->city->next = NULL;
