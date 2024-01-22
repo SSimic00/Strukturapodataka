@@ -36,7 +36,6 @@ int hash_function(char* key);
 void insert_into_hash_table(HashTable table, char* countryName, char* fileName);
 void AddCity(Position cityList, char* fileName);
 
-int Search(Tree root, char* countryName, int population);
 Tree AddCountry(Tree root, char* countryName, char* fileName);
 Tree SearchCountry(Tree root, char* countryName);
 void PrintCountriesList(Position cityList);
@@ -88,7 +87,6 @@ int main() {
             current = current->next;
         }
     }
-
 
     return 0;
 }
@@ -186,7 +184,7 @@ void AddCity(Position cityList, char* fileName) {
         exit(EXIT_FAILURE);
     }
 
-    while (fscanf(file, "%s %d", cityName, &population) == 2) {
+    while (fscanf(file, "%49s %d", cityName, &population) == 2) {
         Position newNode = (Position)malloc(sizeof(Cities));
         if (newNode == NULL) {
             printf("Memory allocation unsuccessful.\n");
@@ -221,3 +219,4 @@ void PrintCities(Position cityList) {
         cityList = cityList->next;
     }
 }
+
